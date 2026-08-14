@@ -15,10 +15,16 @@ const hasAuth0 = required.every((k) => Boolean(process.env[k]));
 let handler: (req: NextApiRequest, res: NextApiResponse) => void | Promise<void>;
 
 if (hasAuth0) {
-  // Lazy require to avoid module-load errors when env is missing
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { handleAuth } = require('@auth0/nextjs-auth0');
-  handler = handleAuth();
+  // Lazy require via eval to avoid bundler resolution when the package is not installed
+  const requireFn = eval('require');
+  try {
+    const { handleAuth } = requireFn('@auth0/nextjs-auth0');
+    handler = handleAuth();
+  } catch (e) {
+    handler = (_req: NextApiRequest, res: NextApiResponse) => {
+      res.status(501).json({ error: 'Auth not configured on this deployment' });
+    };
+  }
 } else {
   handler = (_req: NextApiRequest, res: NextApiResponse) => {
     res.status(501).json({ error: 'Auth not configured on this deployment' });

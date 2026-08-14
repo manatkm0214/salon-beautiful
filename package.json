@@ -13,7 +13,6 @@
     "vercel:setup": "bash scripts/vercel-deploy-helper.sh"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^2.2.0",
     "@prisma/client": "^5.10.0",
     "next": "16.3.0",
     "nodemailer": "^9.0.5",
