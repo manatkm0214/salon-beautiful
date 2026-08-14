@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="gcolor" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff5f7"/>
+      <stop offset="1" stop-color="#fef3ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#gcolor)"/>
+  <g transform="translate(60,60)">
+    <rect x="0" y="0" width="1080" height="680" rx="20" fill="#fff" stroke="#f3f4f6"/>
+    <g transform="translate(40,40)">
+      <rect x="0" y="0" width="520" height="360" rx="12" fill="#fff0f6" />
+      <circle cx="760" cy="140" r="120" fill="#fde68a" opacity="0.9" />
+      <g fill="#111827" font-family="Georgia, 'Times New Roman', serif">
+        <text x="0" y="420" font-size="48" font-weight="700">カラーリング</text>
+        <text x="0" y="468" font-size="18" fill="#6b7280">ダメージケアカラー</text>
+      </g>
+      <g transform="translate(0,500)" fill="#374151">
+        <rect x="0" y="0" width="220" height="8" rx="4" />
+        <rect x="0" y="24" width="180" height="8" rx="4" opacity="0.6"/>
+      </g>
+    </g>
+  </g>
+</svg>

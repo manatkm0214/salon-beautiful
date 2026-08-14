@@ -32,7 +32,7 @@ export default function Home() {
             </div>
           </div>
           <div className="w-full h-56 rounded-lg overflow-hidden">
-          <Image src="/photos/hero-photo.svg" alt="salon" width={720} height={320} className="object-cover w-full h-full" />
+          <Image src="/photos/hero-real.jpg" alt="salon" width={720} height={320} className="object-cover w-full h-full" />
           </div>
         </section>
 

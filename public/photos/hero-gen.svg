@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <linearGradient id="hgrad" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff7f3" />
+      <stop offset="1" stop-color="#fff9fb" />
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18" result="b"/>
+      <feBlend in="SourceGraphic" in2="b" />
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#hgrad)" />
+  <g transform="translate(80,80)">
+    <rect x="0" y="0" width="1440" height="740" rx="28" fill="#fff" stroke="#f3f4f6"/>
+    <g transform="translate(60,60)">
+      <rect x="0" y="0" width="640" height="620" rx="16" fill="#fffaf0" />
+      <g transform="translate(680,40)">
+        <rect x="0" y="0" width="360" height="240" rx="14" fill="#fff4f6" stroke="#fed7e2"/>
+        <rect x="0" y="260" width="360" height="300" rx="14" fill="#f8fafc" stroke="#e9ecef"/>
+      </g>
+      <g transform="translate(40,40)" filter="url(#soft)">
+        <ellipse cx="420" cy="420" rx="200" ry="160" fill="#fff1e6" />
+      </g>
+      <g transform="translate(40,20)" fill="#111827" font-family="Georgia, 'Times New Roman', serif">
+        <text x="0" y="40" font-size="42" font-weight="700">Lumière Atelier</text>
+        <text x="0" y="88" font-size="20" fill="#6b7280">丁寧なおもてなしと上質な技術</text>
+      </g>
+      <g transform="translate(740,380)" fill="#374151">
+        <text x="0" y="0" font-size="22" font-weight="600">Relaxing salon space</text>
+        <text x="0" y="34" font-size="16" fill="#6b7280">落ち着いた雰囲気で施術いたします</text>
+      </g>
+    </g>
+  </g>
+</svg>

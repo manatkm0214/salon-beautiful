@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="gperm" x1="0" x2="1">
+      <stop offset="0" stop-color="#f0fdfa"/>
+      <stop offset="1" stop-color="#e0f2fe"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#gperm)"/>
+  <g transform="translate(60,60)">
+    <rect x="0" y="0" width="1080" height="680" rx="20" fill="#fff" stroke="#ecfeff"/>
+    <g transform="translate(40,40)">
+      <ellipse cx="220" cy="180" rx="140" ry="110" fill="#e6fffa" />
+      <rect x="360" y="40" width="640" height="320" rx="12" fill="#f0f9ff" />
+      <g fill="#111827" font-family="Georgia, 'Times New Roman', serif">
+        <text x="360" y="420" font-size="48" font-weight="700">パーマ</text>
+        <text x="360" y="468" font-size="18" fill="#6b7280">自然なカール</text>
+      </g>
+      <g transform="translate(40,380)" fill="#374151">
+        <rect x="0" y="0" width="280" height="8" rx="4" />
+        <rect x="0" y="24" width="200" height="8" rx="4" opacity="0.6"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="gcut" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff7ed"/>
+      <stop offset="1" stop-color="#fff1f2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#gcut)"/>
+  <g transform="translate(60,60)">
+    <rect x="0" y="0" width="1080" height="680" rx="20" fill="#fff" stroke="#f3f4f6"/>
+    <g transform="translate(40,40)">
+      <circle cx="180" cy="180" r="140" fill="#fef3c7" />
+      <rect x="360" y="40" width="640" height="320" rx="12" fill="#fefce8" />
+      <g fill="#111827" font-family="Georgia, 'Times New Roman', serif">
+        <text x="360" y="420" font-size="48" font-weight="700">カット</text>
+        <text x="360" y="468" font-size="18" fill="#6b7280">シャンプー・ブロー込み</text>
+      </g>
+      <g transform="translate(40,380)" fill="#374151">
+        <rect x="0" y="0" width="320" height="8" rx="4" />
+        <rect x="0" y="24" width="260" height="8" rx="4" opacity="0.6"/>
+      </g>
+    </g>
+  </g>
+</svg>
