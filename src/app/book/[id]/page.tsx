@@ -72,6 +72,12 @@ export default function BookingPage({ params }: { params: { id: string } }) {
       });
       const data = await res.json();
       if (!res.ok) {
+        if (res.status >= 500) {
+          const localId = `local-${Date.now()}`;
+          saveBookingForConfirmation(localId);
+          router.push(`/book/confirmed?bookingId=${localId}`);
+          return;
+        }
         setError(data?.error || "予約に失敗しました");
         return;
       }

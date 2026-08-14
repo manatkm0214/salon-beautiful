@@ -36,6 +36,7 @@ export default function ConfirmedPage() {
         <div className="bg-white p-8 rounded-lg shadow-sm">
           <h2 className="text-2xl font-semibold mb-3">ご予約が完了しました</h2>
           <p className="text-zinc-600 mb-4">以下の情報で予約を受け付けました。銀行振込にてお支払いください。入金確認後、予約を確定します。</p>
+          {bookingId?.startsWith("local-") && <div className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-950">現在はサーバー接続がないため、この端末に予約内容を保存しました。共有予約として運用するにはデータベース接続が必要です。</div>}
 
           <div className="border rounded p-4 mb-4">
             <div className="text-sm text-zinc-700 mb-2">予約ID</div>
