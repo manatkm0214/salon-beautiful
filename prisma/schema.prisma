@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  createdAt DateTime @default(now())
+  bookings  Booking[]
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  durationMin Int
+  priceCents  Int
+  createdAt   DateTime @default(now())
+  bookings    Booking[]
+}
+
+model Booking {
+  id             String   @id @default(cuid())
+  user           User?    @relation(fields: [userId], references: [id])
+  userId         String?
+  service        Service  @relation(fields: [serviceId], references: [id])
+  serviceId      String
+  scheduledAt    DateTime
+  createdAt      DateTime @default(now())
+  status         BookingStatus @default(PENDING)
+  payment        Payment?
+  note           String?
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model Payment {
+  id           String   @id @default(cuid())
+  booking      Booking  @relation(fields: [bookingId], references: [id])
+  bookingId    String   @unique
+  method       PaymentMethod
+  paid         Boolean  @default(false)
+  amountCents  Int
+  bankRef      String?  // 入金確認用メモ（銀行振込の場合）
+  createdAt    DateTime @default(now())
+}
+
+enum PaymentMethod {
+  BANK_TRANSFER
+  NONE
+}
