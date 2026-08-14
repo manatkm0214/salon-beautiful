@@ -3,13 +3,12 @@ set -euo pipefail
 
 echo "=== Vercel 環境変数 セットアップ ヘルパー ==="
 
-if ! command -v vercel >/dev/null 2>&1; then
-  echo "vercel CLI が見つかりません。インストールしてください: npm i -g vercel"
-  exit 1
-fi
+# Use npx to run vercel so global install isn't required
+
+echo "Vercel CLI を npx 経由で実行します（グローバルインストール不要）"
 
 echo "Vercel にログインしてください（ブラウザが起動します）。"
-vercel login || { echo "login failed"; exit 1; }
+npx --yes vercel login || { echo "login failed"; exit 1; }
 
 read -p "Vercel プロジェクト ID を入力してください: " VERCEL_PROJECT_ID
 
@@ -24,8 +23,8 @@ add_env() {
     return
   fi
   echo "Adding $NAME..."
-  # vercel env add NAME production reads value from stdin; provide via here-doc
-  vercel env add "$NAME" production <<EOF
+  # npx vercel env add NAME production reads value from stdin; provide via here-doc
+  npx --yes vercel env add "$NAME" production <<EOF
 $VAL
 EOF
   echo "$NAME 設定完了"
