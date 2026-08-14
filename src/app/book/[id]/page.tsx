@@ -1,39 +1,43 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SERVICES } from "@/data/services";
 import GuestAuth from "@/components/GuestAuth";
+import BookingCalendar from "@/components/BookingCalendar";
 
 export default function BookingPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const service = SERVICES.find((s) => s.id === params.id);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [guest] = useState(() => {
+    if (typeof window === "undefined") return { name: "", email: "" };
+    try {
+      const stored = JSON.parse(localStorage.getItem("guestUser") || "{}");
+      return {
+        name: typeof stored.name === "string" ? stored.name : "",
+        email: typeof stored.email === "string" ? stored.email : "",
+      };
+    } catch {
+      return { name: "", email: "" };
+    }
+  });
+  const [name, setName] = useState(guest.name);
+  const [email, setEmail] = useState(guest.email);
   const [datetime, setDatetime] = useState("");
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem("guestUser");
-      if (raw) {
-        const g = JSON.parse(raw);
-        if (g?.name) setName(g.name);
-        if (g?.email) setEmail(g.email);
-      }
-    } catch (e) {
-      // ignore
-    }
-  }, []);
 
   if (!service) return <div className="p-8">サービスが見つかりません。</div>;
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!email || !datetime) {
-      setError("メールアドレスと日時は必須です");
+    if (!name.trim() || !email || !datetime) {
+      setError("お名前、メールアドレス、日時を入力してください");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      setError("メールアドレスの形式をご確認ください");
       return;
     }
     setLoading(true);
@@ -54,7 +58,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
       if (!res.ok) throw new Error(data?.error || "予約に失敗しました");
       // redirect to confirmation page with booking id
       router.push(`/book/confirmed?bookingId=${data.booking.id}`);
-    } catch (err: any) {
+    } catch (err: unknown) {
       // If the API is unavailable, fall back to saving the booking locally in localStorage
       console.warn('Booking API failed, falling back to localStorage', err);
       try {
@@ -87,45 +91,55 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black text-foreground">
-      <main className="max-w-2xl mx-auto px-6 py-8">
-        <div className="mb-4 text-right">
+    <div className="min-h-screen bg-[#faf9f6] text-stone-900">
+      <main className="mx-auto max-w-4xl px-5 py-8 sm:px-6 sm:py-12">
+        <div className="mb-7 flex items-center justify-between">
+          <button type="button" onClick={() => history.back()} className="text-sm text-stone-600 hover:text-amber-800">← メニューに戻る</button>
           <GuestAuth />
         </div>
-        <h2 className="text-2xl font-semibold mb-2">{service.name} のご予約</h2>
-        <p className="text-zinc-600 mb-6">所要時間: {service.durationMin}分　料金: ¥{Math.round(service.priceCents / 100).toLocaleString()}</p>
+        <div className="mb-8">
+          <p className="mb-2 text-xs font-semibold tracking-[0.18em] text-amber-800">ONLINE RESERVATION</p>
+          <h2 className="text-3xl font-semibold tracking-tight">{service.name} のご予約</h2>
+          <p className="mt-2 text-stone-600">日時を選択して、ご予約情報をご入力ください。</p>
+        </div>
 
-        <form onSubmit={onSubmit} className="bg-white p-6 rounded-lg shadow-sm">
-          <label className="block mb-3">
-            <div className="text-sm mb-1">お名前（任意）</div>
-            <input className="w-full border rounded px-3 py-2" value={name} onChange={(e) => setName(e.target.value)} />
+        <form onSubmit={onSubmit} className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
+          <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200 sm:p-7">
+            <h3 className="mb-4 text-lg font-semibold">1. ご希望日時</h3>
+            <BookingCalendar value={datetime} onChange={setDatetime} />
+            {datetime && <p className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-950">選択中：{new Date(datetime).toLocaleString("ja-JP", { dateStyle: "long", timeStyle: "short" })}</p>}
+
+            <h3 className="mb-4 mt-8 text-lg font-semibold">2. お客様情報</h3>
+            <label className="block mb-4">
+            <div className="mb-1.5 text-sm font-medium">お名前 <span className="text-amber-800">必須</span></div>
+            <input autoComplete="name" required className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none transition focus:border-amber-700 focus:ring-2 focus:ring-amber-100" value={name} onChange={(e) => setName(e.target.value)} />
           </label>
 
-          <label className="block mb-3">
-            <div className="text-sm mb-1">メールアドレス</div>
-            <input className="w-full border rounded px-3 py-2" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <label className="block mb-4">
+            <div className="mb-1.5 text-sm font-medium">メールアドレス <span className="text-amber-800">必須</span></div>
+            <input type="email" autoComplete="email" required className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none transition focus:border-amber-700 focus:ring-2 focus:ring-amber-100" value={email} onChange={(e) => setEmail(e.target.value)} />
           </label>
 
-          <label className="block mb-3">
-            <div className="text-sm mb-1">希望日時</div>
-            <input type="datetime-local" className="w-full border rounded px-3 py-2" value={datetime} onChange={(e) => setDatetime(e.target.value)} />
+          <label className="block">
+            <div className="mb-1.5 text-sm font-medium">備考 <span className="font-normal text-stone-500">（任意）</span></div>
+            <textarea rows={3} placeholder="ご要望やご相談があればご記入ください" className="w-full resize-none rounded-lg border border-stone-300 px-3 py-2.5 outline-none transition focus:border-amber-700 focus:ring-2 focus:ring-amber-100" value={note} onChange={(e) => setNote(e.target.value)} />
           </label>
+          </section>
 
-          <label className="block mb-3">
-            <div className="text-sm mb-1">備考</div>
-            <textarea className="w-full border rounded px-3 py-2" value={note} onChange={(e) => setNote(e.target.value)} />
-          </label>
-
-          {error && <div className="text-sm text-red-600 mb-3">{error}</div>}
-
-          <div className="flex gap-3">
-            <button type="submit" className="rounded-md bg-foreground text-background px-5 py-2" disabled={loading}>
-              {loading ? "送信中…" : "予約する"}
+          <aside className="h-fit rounded-2xl bg-stone-900 p-5 text-stone-50 shadow-sm sm:p-6 lg:sticky lg:top-6">
+            <p className="text-xs font-semibold tracking-[0.16em] text-amber-300">RESERVATION SUMMARY</p>
+            <h3 className="mt-4 text-xl font-semibold">{service.name}</h3>
+            <div className="mt-5 space-y-3 border-y border-stone-700 py-5 text-sm text-stone-300">
+              <div className="flex justify-between gap-3"><span>所要時間</span><span className="text-white">約 {service.durationMin} 分</span></div>
+              <div className="flex justify-between gap-3"><span>料金</span><span className="text-white">¥{Math.round(service.priceCents / 100).toLocaleString()}</span></div>
+              <div><span>ご予約日時</span><p className="mt-1 font-medium text-white">{datetime ? new Date(datetime).toLocaleString("ja-JP", { dateStyle: "medium", timeStyle: "short" }) : "日時を選択してください"}</p></div>
+            </div>
+            {error && <div role="alert" className="mt-4 rounded-lg bg-red-950/60 px-3 py-2 text-sm text-red-200">{error}</div>}
+            <button type="submit" className="mt-5 w-full rounded-lg bg-amber-500 px-5 py-3 font-semibold text-stone-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50" disabled={loading}>
+              {loading ? "予約を送信中…" : "この内容で予約する"}
             </button>
-            <button type="button" className="rounded-md border px-5 py-2" onClick={() => history.back()}>
-              戻る
-            </button>
-          </div>
+            <p className="mt-3 text-center text-xs leading-relaxed text-stone-400">送信後、銀行振込のご案内を表示します。入金確認後に予約確定となります。</p>
+          </aside>
         </form>
       </main>
     </div>

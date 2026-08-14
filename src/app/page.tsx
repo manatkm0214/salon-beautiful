@@ -29,7 +29,7 @@ export default function Home() {
             <p className="text-zinc-600 mb-6">Lumière Atelier は落ち着いた空間で丁寧なおもてなしを提供するヘアサロンです。オンラインで簡単にご予約ください。</p>
             <div className="flex gap-3">
               <Link className="rounded-md bg-foreground text-background px-5 py-3" href="/services">メニューを見る</Link>
-              <a className="rounded-md border px-5 py-3" href="/book/">ご予約へ</a>
+              <Link className="rounded-md border px-5 py-3" href="/services">ご予約へ</Link>
             </div>
           </div>
           <div className="w-full h-56 rounded-lg overflow-hidden">
