@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SERVICES } from "@/data/services";
 import ServiceCard from "@/components/ServiceCard";
+import GuestAuth from "@/components/GuestAuth";
 
 export default function Home() {
   return (
@@ -17,7 +18,7 @@ export default function Home() {
         <nav className="flex items-center gap-4">
           <Link href="/" className="text-zinc-700">ホーム</Link>
           <Link href="/services" className="text-zinc-700">メニュー</Link>
-          <a href="/api/auth/login" className="ml-4 hidden sm:inline-block rounded-md border px-3 py-1">ログイン</a>
+          <div className="ml-4"><GuestAuth /></div>
         </nav>
       </header>
 

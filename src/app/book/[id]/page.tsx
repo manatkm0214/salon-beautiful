@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { SERVICES } from "@/data/services";
+import GuestAuth from "@/components/GuestAuth";
 
 export default function BookingPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -12,6 +13,19 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("guestUser");
+      if (raw) {
+        const g = JSON.parse(raw);
+        if (g?.name) setName(g.name);
+        if (g?.email) setEmail(g.email);
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
 
   if (!service) return <div className="p-8">サービスが見つかりません。</div>;
 
@@ -76,8 +90,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     <div className="min-h-screen bg-zinc-50 dark:bg-black text-foreground">
       <main className="max-w-2xl mx-auto px-6 py-8">
         <div className="mb-4 text-right">
-          <a href="/api/auth/login" className="text-sm rounded-md border px-3 py-1 mr-2">ログイン</a>
-          <a href="/api/auth/logout" className="text-sm rounded-md border px-3 py-1">ログアウト</a>
+          <GuestAuth />
         </div>
         <h2 className="text-2xl font-semibold mb-2">{service.name} のご予約</h2>
         <p className="text-zinc-600 mb-6">所要時間: {service.durationMin}分　料金: ¥{Math.round(service.priceCents / 100).toLocaleString()}</p>
