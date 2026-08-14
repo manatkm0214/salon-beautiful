@@ -12,7 +12,7 @@ export default function ConfirmedPage() {
     const id = params.get("bookingId");
     setBookingId(id);
 
-    if (id && id.startsWith("local-")) {
+    if (id) {
       try {
         const key = 'local_bookings';
         const existing = JSON.parse(localStorage.getItem(key) || '[]');
@@ -40,7 +40,7 @@ export default function ConfirmedPage() {
 
           {localBooking && (
             <div className="border rounded p-4 mb-4">
-              <div className="text-sm text-zinc-700 mb-2">予約内容（ローカル保存）</div>
+              <div className="text-sm text-zinc-700 mb-2">予約内容</div>
               <div className="mb-1">サービス: {service?.name || localBooking.serviceId}</div>
               <div className="mb-1">日時: {new Date(localBooking.scheduledAt).toLocaleString()}</div>
               <div className="mb-1">お支払い: ¥{Math.round((localBooking.payment?.amountCents || 0) / 100).toLocaleString()}</div>

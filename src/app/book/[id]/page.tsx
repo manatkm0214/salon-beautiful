@@ -29,6 +29,22 @@ export default function BookingPage({ params }: { params: { id: string } }) {
 
   if (!service) return <div className="p-8">サービスが見つかりません。</div>;
 
+  const saveBookingForConfirmation = (id: string) => {
+    const key = "local_bookings";
+    const booking = {
+      id,
+      serviceId: service.id,
+      scheduledAt: datetime,
+      user: { email, name },
+      note,
+      payment: { method: "BANK_TRANSFER", paid: false, amountCents: service.priceCents },
+      createdAt: new Date().toISOString(),
+      status: "PENDING",
+    };
+    const existing = JSON.parse(localStorage.getItem(key) || "[]") as { id: string }[];
+    localStorage.setItem(key, JSON.stringify([...existing.filter((item) => item.id !== id), booking]));
+  };
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -55,28 +71,18 @@ export default function BookingPage({ params }: { params: { id: string } }) {
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "予約に失敗しました");
-      // redirect to confirmation page with booking id
+      if (!res.ok) {
+        setError(data?.error || "予約に失敗しました");
+        return;
+      }
+      saveBookingForConfirmation(data.booking.id);
       router.push(`/book/confirmed?bookingId=${data.booking.id}`);
     } catch (err: unknown) {
       // If the API is unavailable, fall back to saving the booking locally in localStorage
       console.warn('Booking API failed, falling back to localStorage', err);
       try {
         const localId = `local-${Date.now()}`;
-        const localBooking = {
-          id: localId,
-          serviceId: service.id,
-          scheduledAt: datetime,
-          user: { email, name },
-          note,
-          payment: { method: 'BANK_TRANSFER', paid: false, amountCents: service.priceCents },
-          createdAt: new Date().toISOString(),
-          status: 'PENDING',
-        };
-        const key = 'local_bookings';
-        const existing = JSON.parse(localStorage.getItem(key) || '[]');
-        existing.push(localBooking);
-        localStorage.setItem(key, JSON.stringify(existing));
+        saveBookingForConfirmation(localId);
 
         // redirect to confirmation page with local booking id
         router.push(`/book/confirmed?bookingId=${localId}`);
