@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#fef3c7" />
+      <stop offset="1" stop-color="#fecdd3" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" fill="url(#g)" rx="16" />
+  <g fill="#111827" font-family="Arial, Helvetica, sans-serif" font-weight="700">
+    <text x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" font-size="40">カット</text>
+    <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="18">シャンプー・ブロー込み</text>
+  </g>
+</svg>

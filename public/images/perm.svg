@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
+  <defs>
+    <linearGradient id="g3" x1="0" x2="1">
+      <stop offset="0" stop-color="#e6fffa" />
+      <stop offset="1" stop-color="#e0f2fe" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" fill="url(#g3)" rx="16" />
+  <g fill="#111827" font-family="Arial, Helvetica, sans-serif" font-weight="700">
+    <text x="50%" y="42%" dominant-baseline="middle" text-anchor="middle" font-size="36">パーマ</text>
+    <text x="50%" y="62%" dominant-baseline="middle" text-anchor="middle" font-size="18">自然なカール</text>
+  </g>
+</svg>

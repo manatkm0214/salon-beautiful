@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function POST(request: Request, context: { params: any }) {
   try {
-    const id = params.id;
+    // In Next 16 the params may be a Promise; await if needed
+    const p = await context.params;
+    const id = p?.id || context.params?.id;
+
+    if (!id) {
+      return NextResponse.json({ error: "Missing id" }, { status: 400 });
+    }
 
     // mark payment as paid and booking confirmed
     const booking = await prisma.booking.update({

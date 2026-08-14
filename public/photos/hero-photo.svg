@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+  <defs>
+    <linearGradient id="hg" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff1f2" />
+      <stop offset="1" stop-color="#fff7ed" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#hg)" />
+  <g transform="translate(60,60)" font-family="Georgia, 'Times New Roman', serif" fill="#111827">
+    <rect width="1080" height="480" rx="16" fill="#fde68a" opacity="0.15" />
+    <g transform="translate(40,30)">
+      <rect x="0" y="0" width="480" height="420" rx="12" fill="#fff" stroke="#f3f4f6"/>
+      <rect x="520" y="0" width="520" height="420" rx="12" fill="#fff" stroke="#f3f4f6"/>
+      <text x="520" y="80" font-size="48" font-weight="700">Lumière Atelier</text>
+      <text x="520" y="125" font-size="20" fill="#6b7280">落ち着いた空間で、あなたらしさを引き出します</text>
+      <text x="20" y="230" font-size="36" font-weight="700">サロン内観</text>
+      <text x="20" y="300" font-size="16" fill="#6b7280">ゆったりしたチェアと自然光でくつろげる空間です。</text>
+    </g>
+  </g>
+</svg>
