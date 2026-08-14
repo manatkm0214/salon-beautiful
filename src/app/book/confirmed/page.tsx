@@ -2,12 +2,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SERVICES } from "@/data/services";
+import InvoiceCard from "@/components/InvoiceCard";
 
 type LocalBooking = {
   id: string;
   serviceId: string;
   scheduledAt: string;
-  payment?: { amountCents?: number };
+  createdAt?: string;
+  user?: { name?: string; email?: string };
+  payment?: { amountCents?: number; paid?: boolean };
 };
 
 export default function ConfirmedPage() {
@@ -47,14 +50,7 @@ export default function ConfirmedPage() {
               <div className="mb-1">お支払い: ¥{Math.round((localBooking.payment?.amountCents || 0) / 100).toLocaleString()}</div>
             </div>
           )}
-
-          <div className="border rounded p-4 mb-4">
-            <div className="text-sm text-zinc-700 mb-2">振込先</div>
-            <div className="mb-1">銀行名: {process.env.NEXT_PUBLIC_BANK_NAME || "Sample Bank"}</div>
-            <div className="mb-1">口座名義: {process.env.NEXT_PUBLIC_BANK_ACCOUNT_NAME || "Salon Sample"}</div>
-            <div className="mb-1">口座番号: {process.env.NEXT_PUBLIC_BANK_ACCOUNT_NUMBER || "000-0000-000"}</div>
-            <div className="text-sm text-zinc-500 mt-2">振込の際、振込人名に予約IDを入れてください。</div>
-          </div>
+          {localBooking && <div className="mb-4"><InvoiceCard booking={localBooking} /></div>}
 
           <div className="flex gap-3">
             <Link href="/" className="rounded-md border px-5 py-2">ホームへ戻る</Link>

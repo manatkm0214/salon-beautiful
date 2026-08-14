@@ -10,6 +10,7 @@ type Booking = {
   scheduledAt: string;
   status?: string;
   user?: { name?: string; email?: string };
+  payment?: { paid?: boolean; amountCents?: number };
 };
 
 function loadBookings(): Booking[] {
@@ -55,6 +56,7 @@ export default function MyBookings() {
               <h2 className="mt-2 text-xl font-semibold">{service?.name || "ご予約メニュー"}</h2>
               <p className="mt-2 text-stone-600">{new Date(booking.scheduledAt).toLocaleString("ja-JP", { dateStyle: "full", timeStyle: "short" })}</p>
               <p className="mt-1 text-sm text-stone-500">予約番号：{booking.id}</p>
+              <p className="mt-3 text-sm font-medium text-stone-800">請求額：¥{Math.round((booking.payment?.amountCents ?? service?.priceCents ?? 0) / 100).toLocaleString()} <span className={booking.payment?.paid ? "ml-2 text-emerald-700" : "ml-2 text-amber-800"}>{booking.payment?.paid ? "お支払い済み" : "入金待ち"}</span></p>
             </div>
             <button type="button" onClick={() => cancel(booking.id)} className="mt-4 rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-700 transition hover:border-red-700 hover:text-red-700 sm:mt-0">予約を取り消す</button>
           </article>
