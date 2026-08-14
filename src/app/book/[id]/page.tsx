@@ -50,6 +50,10 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black text-foreground">
       <main className="max-w-2xl mx-auto px-6 py-8">
+        <div className="mb-4 text-right">
+          <a href="/api/auth/login" className="text-sm rounded-md border px-3 py-1 mr-2">ログイン</a>
+          <a href="/api/auth/logout" className="text-sm rounded-md border px-3 py-1">ログアウト</a>
+        </div>
         <h2 className="text-2xl font-semibold mb-2">{service.name} のご予約</h2>
         <p className="text-zinc-600 mb-6">所要時間: {service.durationMin}分　料金: ¥{Math.round(service.priceCents / 100).toLocaleString()}</p>
 

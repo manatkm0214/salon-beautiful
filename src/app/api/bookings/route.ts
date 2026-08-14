@@ -43,6 +43,33 @@ export async function POST(request: Request) {
       note: `予約ID: ${booking.id}`,
     };
 
+    // send confirmation email (best-effort)
+    try {
+      const emailHtml = `
+        <p>ご予約ありがとうございます。以下の内容で予約を受け付けました。</p>
+        <ul>
+          <li>予約ID: ${booking.id}</li>
+          <li>サービス: ${booking.serviceId}</li>
+          <li>日時: ${booking.scheduledAt.toISOString()}</li>
+        </ul>
+        <p>振込先:</p>
+        <ul>
+          <li>銀行名: ${bankInfo.bankName}</li>
+          <li>口座名義: ${bankInfo.accountName}</li>
+          <li>口座番号: ${bankInfo.accountNumber}</li>
+          <li>振込人名に予約IDを入れてください: ${booking.id}</li>
+        </ul>
+      `;
+
+      // dynamic import to avoid requiring nodemailer in environments without SMTP
+      const { sendBookingEmail } = await import('@/lib/mailer');
+      if (booking.user?.email) {
+        await sendBookingEmail(booking.user.email, 'ご予約確認', emailHtml);
+      }
+    } catch (emailErr) {
+      console.error('Email send failed', emailErr);
+    }
+
     return NextResponse.json({ booking, bankInfo }, { status: 201 });
   } catch (err) {
     console.error(err);

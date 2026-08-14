@@ -17,6 +17,8 @@ export default function Home() {
         <nav className="flex items-center gap-4">
           <Link href="/">ホーム</Link>
           <Link href="/services">メニュー</Link>
+          <a href="/api/auth/login" className="ml-4 hidden sm:inline-block rounded-md border px-3 py-1">ログイン</a>
+          <a href="/api/auth/logout" className="ml-2 hidden sm:inline-block rounded-md border px-3 py-1">ログアウト</a>
         </nav>
       </header>
 
