@@ -9,7 +9,8 @@
     "lint": "eslint",
     "prisma": "prisma",
     "db:push": "prisma db push",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "vercel:setup": "bash scripts/vercel-deploy-helper.sh"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^2.2.0",
