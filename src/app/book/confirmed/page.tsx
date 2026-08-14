@@ -1,28 +1,29 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Link from "next/link";
 import { SERVICES } from "@/data/services";
 
+type LocalBooking = {
+  id: string;
+  serviceId: string;
+  scheduledAt: string;
+  payment?: { amountCents?: number };
+};
+
 export default function ConfirmedPage() {
-  const [bookingId, setBookingId] = useState<string | null>(null);
-  const [localBooking, setLocalBooking] = useState<any | null>(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("bookingId");
-    setBookingId(id);
-
-    if (id) {
-      try {
-        const key = 'local_bookings';
-        const existing = JSON.parse(localStorage.getItem(key) || '[]');
-        const found = existing.find((b: any) => b.id === id) || null;
-        setLocalBooking(found);
-      } catch (err) {
-        console.error('Failed to read local booking', err);
-      }
+  const [confirmation] = useState(() => {
+    if (typeof window === "undefined") return { bookingId: null as string | null, booking: null as LocalBooking | null };
+    const bookingId = new URLSearchParams(window.location.search).get("bookingId");
+    if (!bookingId) return { bookingId, booking: null };
+    try {
+      const existing = JSON.parse(localStorage.getItem("local_bookings") || "[]") as LocalBooking[];
+      return { bookingId, booking: existing.find((booking) => booking.id === bookingId) || null };
+    } catch {
+      return { bookingId, booking: null };
     }
-  }, []);
+  });
+  const bookingId = confirmation.bookingId;
+  const localBooking = confirmation.booking;
 
   const service = localBooking ? SERVICES.find((s) => s.id === localBooking.serviceId) : null;
 
@@ -56,7 +57,8 @@ export default function ConfirmedPage() {
           </div>
 
           <div className="flex gap-3">
-            <a href="/" className="rounded-md border px-5 py-2">ホームへ戻る</a>
+            <Link href="/" className="rounded-md border px-5 py-2">ホームへ戻る</Link>
+            <Link href="/bookings" className="rounded-md bg-stone-900 px-5 py-2 text-white">予約を確認する</Link>
           </div>
         </div>
       </main>

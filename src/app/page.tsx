@@ -18,6 +18,7 @@ export default function Home() {
         <nav className="flex items-center gap-4">
           <Link href="/" className="hidden text-sm text-stone-600 sm:block">ホーム</Link>
           <Link href="/services" className="text-sm text-stone-600">メニュー</Link>
+          <Link href="/bookings" className="hidden text-sm text-stone-600 sm:block">予約確認</Link>
           <div className="hidden sm:block"><GuestAuth /></div>
         </nav>
       </header>
@@ -48,6 +49,12 @@ export default function Home() {
               <ServiceCard key={s.id} id={s.id} name={s.name} description={s.description} durationMin={s.durationMin} priceCents={s.priceCents} image={s.image} />
             ))}
           </div>
+        </section>
+
+        <section className="mb-12 grid gap-5 rounded-3xl bg-amber-50 p-7 sm:grid-cols-3 sm:p-9">
+          <div><p className="text-xs font-semibold tracking-[0.16em] text-amber-800">OPENING HOURS</p><p className="mt-3 font-semibold">10:00 — 19:00</p><p className="mt-1 text-sm text-stone-600">最終受付 17:00 ／ 月曜定休</p></div>
+          <div><p className="text-xs font-semibold tracking-[0.16em] text-amber-800">ACCESS</p><p className="mt-3 font-semibold">Sample City, 1-2-3</p><p className="mt-1 text-sm text-stone-600">Sample Station 徒歩5分</p></div>
+          <div><p className="text-xs font-semibold tracking-[0.16em] text-amber-800">RESERVATION</p><p className="mt-3 font-semibold">オンラインで24時間受付</p><Link href="/services" className="mt-1 inline-block text-sm text-amber-800 hover:underline">日時を選択する →</Link></div>
         </section>
       </main>
 

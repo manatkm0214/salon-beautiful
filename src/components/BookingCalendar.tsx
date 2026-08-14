@@ -7,6 +7,8 @@ type BookingCalendarProps = {
   onChange: (value: string) => void;
 };
 
+type SavedBooking = { scheduledAt?: string; status?: string };
+
 const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
 const OPENING_HOURS = ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
 
@@ -32,6 +34,17 @@ export default function BookingCalendar({ value, onChange }: BookingCalendarProp
   );
   const selectedDate = value ? value.slice(0, 10) : "";
   const selectedTime = value ? value.slice(11, 16) : "";
+  const [reservedSlots] = useState(() => {
+    if (typeof window === "undefined") return [] as string[];
+    try {
+      const saved = JSON.parse(localStorage.getItem("local_bookings") || "[]") as SavedBooking[];
+      return saved
+        .filter((booking) => booking.status !== "CANCELLED" && typeof booking.scheduledAt === "string")
+        .map((booking) => booking.scheduledAt as string);
+    } catch {
+      return [] as string[];
+    }
+  });
 
   const days = useMemo(() => {
     const firstDay = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1);
@@ -114,15 +127,18 @@ export default function BookingCalendar({ value, onChange }: BookingCalendarProp
         </div>
         <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
           {OPENING_HOURS.map((time) => (
-            <button
+            (() => {
+              const reserved = reservedSlots.includes(`${selectedDate}T${time}`);
+              return <button
               key={time}
-              className={`rounded-lg border px-2 py-2 text-sm transition ${selectedTime === time ? "border-amber-800 bg-amber-800 text-white" : selectedDate ? "border-stone-200 bg-white text-stone-700 hover:border-amber-700" : "cursor-not-allowed border-stone-200 bg-stone-100 text-stone-400"}`}
-              disabled={!selectedDate}
+              className={`rounded-lg border px-2 py-2 text-sm transition ${selectedTime === time ? "border-amber-800 bg-amber-800 text-white" : selectedDate && !reserved ? "border-stone-200 bg-white text-stone-700 hover:border-amber-700" : "cursor-not-allowed border-stone-200 bg-stone-100 text-stone-400"}`}
+              disabled={!selectedDate || reserved}
               onClick={() => chooseTime(time)}
               type="button"
             >
-              {time}
-            </button>
+              {reserved ? "満席" : time}
+            </button>;
+            })()
           ))}
         </div>
       </div>
