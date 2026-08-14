@@ -1,13 +1,14 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { SERVICES } from "@/data/services";
 import GuestAuth from "@/components/GuestAuth";
 import BookingCalendar from "@/components/BookingCalendar";
 
-export default function BookingPage({ params }: { params: { id: string } }) {
+export default function BookingPage() {
   const router = useRouter();
-  const service = SERVICES.find((s) => s.id === params.id);
+  const params = useParams<{ id: string }>();
+  const service = SERVICES.find((s) => s.id === params?.id);
   const [guest] = useState(() => {
     if (typeof window === "undefined") return { name: "", email: "" };
     try {
