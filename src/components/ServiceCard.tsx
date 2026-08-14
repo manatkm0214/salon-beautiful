@@ -16,7 +16,12 @@ export default function ServiceCard({ id, name, description, durationMin, priceC
     <div className="rounded-xl overflow-hidden shadow-md bg-white hover:shadow-lg transition-shadow">
       {image && (
         <div className="w-full h-40 relative">
-          <Image src={image} alt={name} fill className="object-cover" />
+          {image.startsWith("/") ? (
+            <Image src={image} alt={name} fill className="object-cover" />
+          ) : (
+            // external image: use img to avoid next/image remote config
+            <img src={image} alt={name} className="object-cover w-full h-full absolute inset-0" />
+          )}
         </div>
       )}
       <div className="p-5">
